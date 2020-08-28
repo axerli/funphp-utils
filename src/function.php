@@ -135,3 +135,30 @@ if (! function_exists('data_set')) {
 		return $target;
 	}
 }
+
+if (!function_exists('collect')) {
+	function collect($data = null)
+	{
+		return new Collection($data);
+	}
+}
+
+if (!function_exists('tap')) {
+	function tap($value, callable $callback = null)
+	{
+		if (!$callback) {
+			return $value;
+		}
+
+		$callback($value);
+
+		return $value;
+	}
+}
+
+if (!function_exists('with')) {
+	function with($value, callable $callback = null)
+	{
+		return $callback ? $callback($value) : $value;
+	}
+}
