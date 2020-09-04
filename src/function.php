@@ -40,7 +40,7 @@ if (!function_exists('first')) {
 	}
 }
 
-if (! function_exists('data_get')) {
+if (!function_exists('data_get')) {
 	/**
 	 * Get an item from an array or object using "dot" notation.
 	 *
@@ -56,11 +56,12 @@ if (! function_exists('data_get')) {
 		}
 
 		$key = is_array($key) ? $key : explode('.', is_int($key) ? (string) $key : $key);
-		while (! is_null($segment = array_shift($key))) {
+		while (!is_null($segment = array_shift($key))) {
 			if ($segment === '*') {
 				if ($target instanceof Collection) {
 					$target = $target->all();
-				} elseif (! is_array($target)) {
+				}
+				elseif (!is_array($target)) {
 					return value($default);
 				}
 				$result = [];
@@ -71,16 +72,18 @@ if (! function_exists('data_get')) {
 			}
 			if (ArrayHelper::accessible($target) && ArrayHelper::exists($target, $segment)) {
 				$target = $target[$segment];
-			} elseif (is_object($target) && isset($target->{$segment})) {
+			}
+			elseif (is_object($target) && isset($target->{$segment})) {
 				$target = $target->{$segment};
-			} else {
+			}
+			else {
 				return value($default);
 			}
 		}
 		return $target;
 	}
 }
-if (! function_exists('data_set')) {
+if (!function_exists('data_set')) {
 	/**
 	 * Set an item on an array or object using dot notation.
 	 *
@@ -94,41 +97,48 @@ if (! function_exists('data_set')) {
 	{
 		$segments = is_array($key) ? $key : explode('.', $key);
 		if (($segment = array_shift($segments)) === '*') {
-			if (! ArrayHelper::accessible($target)) {
+			if (!ArrayHelper::accessible($target)) {
 				$target = [];
 			}
 			if ($segments) {
 				foreach ($target as &$inner) {
 					data_set($inner, $segments, $value, $overwrite);
 				}
-			} elseif ($overwrite) {
+			}
+			elseif ($overwrite) {
 				foreach ($target as &$inner) {
 					$inner = $value;
 				}
 			}
-		} elseif (ArrayHelper::accessible($target)) {
+		}
+		elseif (ArrayHelper::accessible($target)) {
 			if ($segments) {
-				if (! ArrayHelper::exists($target, $segment)) {
+				if (!ArrayHelper::exists($target, $segment)) {
 					$target[$segment] = [];
 				}
 				data_set($target[$segment], $segments, $value, $overwrite);
-			} elseif ($overwrite || ! ArrayHelper::exists($target, $segment)) {
+			}
+			elseif ($overwrite || !ArrayHelper::exists($target, $segment)) {
 				$target[$segment] = $value;
 			}
-		} elseif (is_object($target)) {
+		}
+		elseif (is_object($target)) {
 			if ($segments) {
-				if (! isset($target->{$segment})) {
+				if (!isset($target->{$segment})) {
 					$target->{$segment} = [];
 				}
 				data_set($target->{$segment}, $segments, $value, $overwrite);
-			} elseif ($overwrite || ! isset($target->{$segment})) {
+			}
+			elseif ($overwrite || !isset($target->{$segment})) {
 				$target->{$segment} = $value;
 			}
-		} else {
+		}
+		else {
 			$target = [];
 			if ($segments) {
 				data_set($target[$segment], $segments, $value, $overwrite);
-			} elseif ($overwrite) {
+			}
+			elseif ($overwrite) {
 				$target[$segment] = $value;
 			}
 		}
@@ -160,5 +170,17 @@ if (!function_exists('with')) {
 	function with($value, callable $callback = null)
 	{
 		return $callback ? $callback($value) : $value;
+	}
+}
+
+if (!function_exists('class_basename')) {
+	/**
+	 * @param string|object $class
+	 * @return string
+	 */
+	function class_basename($class)
+	{
+		$className = is_object($class) ? get_class($class) : $class;
+		return basename(str_replace('\\', '/', $className));
 	}
 }
