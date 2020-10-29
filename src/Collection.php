@@ -232,9 +232,9 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
 	 * Get the mode of a given key.
 	 *
 	 * @param null|mixed $key
-	 * @return null|array
+	 * @return null|array|void
 	 */
-	public function mode($key = null): ?array
+	public function mode($key = null)
 	{
 		if ($this->count() === 0) {
 			return;
