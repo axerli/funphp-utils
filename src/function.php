@@ -136,8 +136,8 @@ if (! function_exists('data_set')) {
 	}
 }
 
-if (!function_exists('collect')) {
-	function collect($data = null)
+if (!function_exists('collection')) {
+	function collection($data = null)
 	{
 		return new Collection($data);
 	}
